@@ -1,0 +1,14 @@
+{
+  "name": "persian-datepikker",
+  "version": "0.0.4",
+  "peerDependencies": {
+    "@angular/common": "^14.0.0",
+    "@angular/core": "^14.0.0",
+    "@angular/forms": "^14.0.0",
+    "moment-jalaali": "^0.9.6",
+    "@types/moment-jalaali": "^0.7.5"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

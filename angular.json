@@ -3,5 +3,36 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "persian-datepikker": {
+      "projectType": "library",
+      "root": "projects/persian-datepikker",
+      "sourceRoot": "projects/persian-datepikker/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/persian-datepikker/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/persian-datepikker/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/persian-datepikker/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/persian-datepikker/src/test.ts",
+            "tsConfig": "projects/persian-datepikker/tsconfig.spec.json",
+            "karmaConfig": "projects/persian-datepikker/karma.conf.js"
+          }
+        }
+      }
+    }
   }
 }

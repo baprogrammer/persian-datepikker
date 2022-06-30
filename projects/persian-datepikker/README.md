@@ -2,10 +2,6 @@
 
 An angular2+ persian date picker based on moment-jalaali that provide simple and beutifull calendar (shamsi - khorshidi - persian ) with full access to config
 
-## demo
-
-view demo [here][demolink]
-
 ## where to use it
 
 this module works in angular projects
@@ -98,4 +94,3 @@ and in component html file
 ```
 
 [jalali]: https://www.npmjs.com/package/moment-jalaali
-[demolink]: https://stackblitz.com/edit/angular-ivy-xitqs1?file=src%2Fapp%2Fapp.module.ts,src%2Fapp%2Fapp.component.html,src%2Fapp%2Fapp.component.ts

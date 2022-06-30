@@ -1,0 +1,243 @@
+@font-face{
+    font-family:'iransans';
+    src:url('/datepikker/projects/persian-datepikker/assets/fonts/iranSans.woff');
+    
+}
+
+*{
+    box-sizing: border-box;
+}
+
+.relative{
+    position: relative;
+}
+
+.datepicker-input input{
+    width: 250px;
+    height: 30px;
+    border-radius: 2px;
+    border: 1px solid #ccc;
+    font-family: 'iransans';
+    text-align: center;
+}
+
+.datepicker-days-title{
+    float: right;
+    width: 100%;
+    margin: 10px 0;
+    border-bottom: 1px solid #cccccc52;
+    padding-bottom: 5px;
+}
+
+.datepicker-content-container{
+    position: absolute;
+    top: 40px;
+    left: 2px;
+    transform-origin: top left ;
+    z-index: 1001;
+}
+
+.datepicker-calendar{
+    width: 450px;
+    height: 450px;
+}
+
+.datepicker-box{
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 2px #ccc;
+    background: #fff;
+    position: relative;
+}
+
+.day-title{
+    font-size: 12px;
+}
+
+.day-title , .day{
+    color: #c3c3c3;
+    float: right;
+    text-align: center;
+    width: 14.28%;
+    padding: 5px;
+}
+
+.day{
+    color: #ccc;
+    cursor: pointer;
+    height: 50px;
+}
+
+.main{
+    color: #444;
+}
+
+.day.selected{
+    color: #cf0055;
+    font-size: 34px;
+    line-height: 30px;
+}
+
+span , div{
+    font-family: iransans;
+}
+
+.month-year-control{
+    cursor: pointer;
+}
+
+.datepicker-control{
+    float: right;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.datepicker-control > div{
+    min-height: 5px;
+    width: 33%;
+    padding: 5px 10px;
+    text-align: center;
+    float: right;
+    cursor: pointer;
+}
+
+.datepicker-control > div  span{
+    -webkit-user-select : none;
+    user-select: none;
+}
+
+.hide{
+    display: none;
+}
+
+.datepicker-month{
+    float: right;
+    width: 33%;
+    text-align: center;
+    line-height: 50px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.datepicker-month.selected{
+    color: #0089ff;
+}
+
+.datepicker-calendar , .datepicker-side{
+    float: right;
+}
+
+.datepicker-side{
+    width: 220px;
+    height: 450px;
+    background: #e7ecec;
+    position: relative;
+}
+
+.selected-date-string{
+    text-align: right;
+    padding: 20px;
+    font-size: 25px;
+    font-weight: bold;
+    color: #444;
+    line-height: 60px;
+}
+
+.datepicker-clock{
+    width: 100%;
+    float: right;
+    position: absolute;
+    text-align: center;
+    bottom: 5px;
+}
+
+.datepicker-clock-input{
+    font-family: 'iransans';
+    border: 1px solid #ccc;
+}
+
+.side-header{
+    font-size: 20px;
+    margin-top: 30px;
+}
+
+.not-allowed{
+    cursor: not-allowed;
+}
+
+.datepicker-month.not-allowed{
+    color: #ccc;
+}
+
+.go-today{
+    position: absolute;
+    bottom: 20px;
+    width: 90%;
+    left: 5%;
+    text-align: center;
+    background: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.go-today span{
+    font-size: 16px;
+}
+
+.datepicker-modal{
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    opacity: 0;
+}
+
+.calendar-go-today{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #000000;
+    border: 2px solid #24c5a0;
+    position: absolute;
+    bottom: 10px;
+    z-index: 1;
+    right: 10px;
+    cursor: pointer;
+}
+
+.dark {
+
+    .datepicker-box{
+        background: #161616;
+    }
+
+    .day{
+        color: #444;
+    }
+
+    .main{
+        color: #ccc;
+    }
+
+    .day.selected{
+        color: #cccf00;
+    }
+
+    .datepicker-control , .datepicker-month{
+        color: #fff;
+    }
+
+    .datepicker-month.not-allowed{
+        color: #6c6c6c ;
+    }
+
+
+    
+
+}
+
+  
+
+
