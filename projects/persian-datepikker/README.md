@@ -2,6 +2,10 @@
 
 An angular2+ persian date picker based on moment-jalaali that provide simple and beutifull calendar (shamsi - khorshidi - persian ) with full access to config
 
+## demo
+
+view demo [here][demolink]
+
 ## where to use it
 
 this module works in angular projects
@@ -63,6 +67,10 @@ access to all the calendar's info in one object
 | ------ | ------ |----|
 | getUserSelectedDate| selectDate | object
 
+```sh
+<persian-datepikker  (getUserSelectedDate)="funcion($evnet)"></persian-datepikker>
+```
+
 ## customize calendar
 
 with object config , you can customize calendar
@@ -93,4 +101,21 @@ and in component html file
 <persian-datepikker  [config]="config" ></persian-datepikker>
 ```
 
+## initialize
+
+##### you can init datepikker just with one of the following parameters
+
+###
+
+| Name         | Type   | example            | order |
+| ------------ | ------ | ------------------ | ----- |
+| selectedDate | object | { }                | 1     |
+| datetime     | string | "1401/04/03 10:30" | 2     |
+| date         | string | "1401/04/03"       | 3     |
+
+```sh
+<persian-datepikker  [datetime]="'1401/04/03 10:30'" ></persian-datepikker>
+```
+
 [jalali]: https://www.npmjs.com/package/moment-jalaali
+[demolink]: https://stackblitz.com/edit/angular-ivy-xitqs1?file=src%2Fapp%2Fapp.module.ts,src%2Fapp%2Fapp.component.html,src%2Fapp%2Fapp.component.ts

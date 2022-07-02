@@ -1,6 +1,6 @@
 @font-face{
     font-family:'iransans';
-    src:url('/datepikker/projects/persian-datepikker/assets/fonts/iranSans.woff');
+    src:url('./iranSans.woff');
     
 }
 
@@ -48,10 +48,15 @@
     box-shadow: 0 0 2px #ccc;
     background: #fff;
     position: relative;
+    padding: 5px;
 }
 
 .day-title{
     font-size: 12px;
+}
+
+.day-title .holiday{
+    color: red;
 }
 
 .day-title , .day{
@@ -66,6 +71,14 @@
     color: #ccc;
     cursor: pointer;
     height: 50px;
+    line-height: 50px;
+}
+
+.day.isHoliday{
+    color: #ff000066 ;
+}
+.day.main.isHoliday{
+    color: red;
 }
 
 .main{
@@ -73,9 +86,11 @@
 }
 
 .day.selected{
-    color: #cf0055;
+    color: #cf0055 !important;
     font-size: 34px;
-    line-height: 30px;
+    line-height: 42px;
+    border: 1px solid;
+    border-radius: 3px;
 }
 
 span , div{
@@ -207,6 +222,19 @@ span , div{
     cursor: pointer;
 }
 
+.datepicker-top{
+    padding: 10px;
+    text-align: right;
+    // display: none;
+    position: relative;
+}
+
+.datepicker-top .calendar-go-today{
+    left: 10px;
+    top: 15px;
+}
+
+
 .dark {
 
     .datepicker-box{
@@ -238,6 +266,21 @@ span , div{
 
 }
 
+@media screen and (max-width: 710px) {
+    .datepicker-side.responsive {
+      display: none;
+    }
+    .datepicker-top{
+        display: block;
+    }
+  }
+  
+
+  @media screen and (max-width: 500px) {
+    .datepicker-calendar{
+        width: 100%;
+    }
+  }
   
 
 

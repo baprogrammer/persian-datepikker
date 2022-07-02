@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit , Output, Renderer2 } from '@angular/core';
 
 import moment from'moment-jalaali';
-
+import { PersianDatepikkerService } from './persian-datepikker.service';
 @Component({
   selector: 'persian-datepikker',
   templateUrl: './persian-datepikker.component.html',
@@ -15,7 +15,11 @@ export class PersianDatepikkerComponent implements OnInit {
   days : any = [] ;
   
   daysTitle : any = ["ش" , "ی" , "د" , "س" , "چ" , "پ" , "ج"] ;
-  Months : any = [
+
+  @Input() holiday : string = "ج" ;
+  holidayIndex : number ;
+
+  @Input() Months : any = [
     { value : 'فروردین' }  ,
     { value : 'اردیبهشت' }  ,
     { value : 'خرداد' }  ,
@@ -49,9 +53,11 @@ export class PersianDatepikkerComponent implements OnInit {
   @Input() config   : any  = { 
     theme : "normal" , //======== dark - 
     sidebar : true , // =====
+    sidebarPosition : 'top' , //======== top - right
+    responsive : true ,
     //inputWidth : "300px" , // =====
     //sideHeader : "انتخاب تاریخ قرعه کشی" , // =====
-    sideBg : "#71b1ab" , //======== side background #59d082  #00623e  #71b1ab
+    sideBg : "#59d082" , //======== side background #59d082  #00623e  #71b1ab  #03283e
     sideColor : "#fff" , //======== side forground 
     //sideWidth  : "180px" , //======== side width
     //sideFontSize  : "28px" , //======== side width
@@ -68,9 +74,9 @@ export class PersianDatepikkerComponent implements OnInit {
   @Output() getUserSelectedDate = new EventEmitter<any>() ;
   
 
-  constructor(private renderer: Renderer2) {
+  constructor(private renderer: Renderer2 ,private datePikkerService : PersianDatepikkerService) {
     
-    
+    this.holidayIndex = this.datePikkerService.findByValue(this.daysTitle , this.holiday) ;
     this.today = this.initDate();
     
    }
@@ -111,14 +117,16 @@ export class PersianDatepikkerComponent implements OnInit {
   goToToday(){
     // ============== check for min and max
     let z =  moment(this.today.date , 'jYYYY/jM/jD').format('jYYYY/jM/jD'); 
+    
     let min = this.checkMinDate(this.minDate , z) ;
     let max = this.checkMaxDate(this.maxDate , z) ;
     // ============== check for min and max
     if(!min && !max){
       this.selectedDate = this.today ;
     }
-    this.getCalendar(this.today.year , this.today.month , this.selectedDate);
-    this.selectMonth(this.today.month);
+    // this.getCalendar(this.today.year , this.today.month , this.selectedDate);
+    
+    this.selectMonth(this.today.month , this.today.year);
   }
 
   focusInput(){
@@ -166,48 +174,8 @@ export class PersianDatepikkerComponent implements OnInit {
   }
 
   getMonthString(monthNumber : number = 1 ){
-    let month = "" ;
-    switch (monthNumber) {
-      case 1 :
-        month = "فروردین"
-        break;
-      case 2 :
-        month = "اردیبهشت"
-        break;
-      case 3 :
-        month = "خرداد"
-        break;
-      case 4 :
-        month = "تیر"
-        break;
-      case 5 :
-        month = "مرداد"
-        break;
-      case 6 :
-        month = "شهریور"
-        break;
-      case 7 :
-        month = "مهر"
-        break;
-      case 8 :
-        month = "آبان"
-        break;
-      case 9 :
-        month = "آذر"
-        break;
-      case 10 :
-        month = "دی"
-        break;
-      case 11 :
-        month = "بهمن"
-        break;
-      case 12 :
-        month = "اسفند"
-        break;
+    let month = this.Months[monthNumber - 1].value ;
     
-      default: month = "فروردین"
-        break;
-    }
     return month ;
   }
 
@@ -301,6 +269,8 @@ export class PersianDatepikkerComponent implements OnInit {
     let thisMonth = moment().jYear(year).jMonth(month).startOf('jMonth').format('jYYYY/jM/jD');
     let lastMonth = moment().jYear(year).jMonth(month-1).startOf('jMonth').format('jYYYY/jM/jD');
     let nextMonth = moment().jYear(year).jMonth(month+1).startOf('jMonth').format('jYYYY/jM/jD');
+    
+    
     //============= check for min Date =========================
     let min = this.checkMinDate(this.minDate , thisMonth) ;
     if(min){
@@ -385,7 +355,12 @@ export class PersianDatepikkerComponent implements OnInit {
     }
     
 // =============== add cursor not allowed to not valid dates =================
+let index = 1 ;
     for(let day of this.days){
+      if(index % (this.holidayIndex+1) == 0 ){
+        day.isHoliday = true ;
+      }
+      index++ ;
       let z =  moment(day.value , 'jYYYY/jM/jD').format('jYYYY/jM/jD'); 
       let min = this.checkMinDate(this.minDate , z) ;
       if(min){
@@ -429,9 +404,11 @@ export class PersianDatepikkerComponent implements OnInit {
     }
   }
   
-  selectMonth(month : any , year : any = this.selectedDate.year , isDisabled : boolean = false ){
+  selectMonth(month : any , year : any  , isDisabled : boolean = false ){
     if(!isDisabled){
-      year = this.currentShowingYear ;
+      if(!year){
+        year = this.currentShowingYear ;
+      }
       let y = moment(year+"/"+month+"/1" , 'jYYYY/jM/jD').format('YYYY/M/D');
       let Date = this.initDate(y);
       this.currentShowingMonth.value = this.getMonthString(month);
@@ -468,7 +445,7 @@ export class PersianDatepikkerComponent implements OnInit {
    this.updateCalendarMonths(this.currentShowingYear )
   }
 
-  updateCalendarMonths(year : number){
+  updateCalendarMonths(year : number){ 
     this.getCalendar(year , 1 , this.selectedDate);
     this.showCalendarMonths();
   }
