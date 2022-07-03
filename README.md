@@ -6,6 +6,12 @@ An angular2+ persian date picker based on moment-jalaali that provide simple and
 
 view demo [here][demolink]
 
+## screenshots
+
+![alt text](https://i.postimg.cc/D0wRffqC/one.jpg)
+
+![alt text](https://i.postimg.cc/FK0MDBrx/two.jpg)
+
 ## where to use it
 
 this module works in angular projects
@@ -115,6 +121,28 @@ and in component html file
 
 ```sh
 <persian-datepikker  [datetime]="'1401/04/03 10:30'" ></persian-datepikker>
+```
+
+## customize months
+
+if you use (shamsi - jalali) calendar in any language rather than persian , you can customize months for your language
+specifically Afghanistan(dari - pashto)
+
+in typescript file
+
+```sh
+    months : any = [
+    { value : 'حمل' }  , { value : 'ثور' }  , { value : 'جوزا' }  ,
+    { value : 'سرطان' }  , { value : 'اسد' }  , { value : 'سنبله' }  ,
+    { value : 'میزان' }  , { value : 'عقرب' }  ,{ value : 'قوس' }  ,
+    { value : 'جدی' }  ,{ value : 'دلو' }  ,{ value : 'حوت' }
+    ] ;
+```
+
+and in component file
+
+```
+<persian-datepikker [Months]="months" ></persian-datepikker>
 ```
 
 [jalali]: https://www.npmjs.com/package/moment-jalaali
