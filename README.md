@@ -8,9 +8,7 @@ view demo [here][demolink]
 
 ## screenshots
 
-![alt text](https://i.postimg.cc/D0wRffqC/one.jpg)
-
-![alt text](https://i.postimg.cc/FK0MDBrx/two.jpg)
+![alt text](https://i.postimg.cc/43n7rq2p/three.png)
 
 ## where to use it
 
