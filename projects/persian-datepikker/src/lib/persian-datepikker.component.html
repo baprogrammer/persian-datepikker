@@ -1,7 +1,7 @@
 <div class="datepicker relative" [ngClass]="config.theme" >
     <div class="datepicker-input">
         <input type="text" [(ngModel)]="displayDate" [style.width]="config.inputWidth"
-         (focus)="showCalendar()" id="dateInput"  >
+         (focus)="showCalendar()" (click)="showCalendar()" id="dateInput" readonly="true" >
     </div>
     <div class="datepicker-modal" *ngIf="displayCalendar" (click)="hideCalendar()" >
 
