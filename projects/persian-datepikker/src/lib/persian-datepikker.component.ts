@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit , Output, Renderer2 } from '@ang
 
 import moment from'moment-jalaali';
 import { PersianDatepikkerService } from './persian-datepikker.service';
+
 @Component({
   selector: 'persian-datepikker',
   templateUrl: './persian-datepikker.component.html',
@@ -70,6 +71,9 @@ export class PersianDatepikkerComponent implements OnInit {
   }; 
 
   displayCalendar : boolean = false ;
+
+  @Input() hideOnSelect : boolean = false ;
+  @Input() calendarType : string = "" ; //====== can be modal
 
   @Output() getUserSelectedDate = new EventEmitter<any>() ;
   
@@ -392,6 +396,9 @@ let index = 1 ;
       this.setDisplayDate();
       this.getUserSelectedDate.emit(this.selectedDate);
     }
+    if(this.hideOnSelect){
+      this.hideCalendar();
+    }
     //===========================================================
   }
 
@@ -522,11 +529,11 @@ let index = 1 ;
   checkValidation(){
     if(!this.isValidDate(this.minDate)){
       this.minDate = "" ;
-      console.error("minDate is not valid ; valid format : 1401/5/24 ");
+      console.warn("minDate is not valid ; valid format : 1401/5/24 ");
     }
     if(!this.isValidDate(this.maxDate)){
       this.maxDate = "" ;
-      console.error("maxDate is not valid ; valid format : 1401/5/24 ");
+      console.warn("maxDate is not valid ; valid format : 1401/5/24 ");
     }
     if(this.date != ''){
       if(!this.isValidDate(this.date)){

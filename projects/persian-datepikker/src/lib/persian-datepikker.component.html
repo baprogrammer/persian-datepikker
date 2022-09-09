@@ -1,108 +1,110 @@
 <div class="datepicker relative" [ngClass]="config.theme" >
     <div class="datepicker-input">
         <input type="text" [(ngModel)]="displayDate" [style.width]="config.inputWidth"
-         (focus)="showCalendar()" (click)="showCalendar()" id="dateInput" readonly="true" >
+         (click)="showCalendar()" readonly id="dateInput"  >
     </div>
-    <div class="datepicker-modal" *ngIf="displayCalendar" (click)="hideCalendar()" >
+    <div class="datepicker-modal" *ngIf="displayCalendar && calendarType != 'modal' " (click)="hideCalendar()" >
 
     </div>
     
-    <div class="datepicker-content-container" [style.transform]="'scale(' + config.scale + ')'" *ngIf="displayCalendar"  >
-        <div class="datepicker-side" *ngIf="config.sidebar && config.sidebarPosition == 'right' " [style.background-color]="config.sideBg" (click)="focusInput()"
-          [style.width]="config.sideWidth" [ngClass]="{ 'responsive' : config.responsive}" >
-            <div class="selected-date-string" [style.font-size]="config.sideFontSize" [style.color]="config.sideColor">
-                <div>
-                    <span>{{selectedDate.FullDate}}</span>
-                </div>
-                <div class="side-header">
-                    <span>{{config.sideHeader}}</span>
-                </div>
-                <div class="go-today" (click)="goToToday()" [style.background]="config.buttonBg" >
-                    <span [style.color]=" config.buttonColor ? config.buttonColor : config.sideBg  " >برو به امروز</span>
+    <div [ngClass]="{ 'modal-datepikker' : calendarType == 'modal' && displayCalendar }" (click)="hideCalendar()" >
+        <div class="datepicker-content-container" [style.transform]="'scale(' + config.scale + ')'" *ngIf="displayCalendar"  >
+            <div class="datepicker-side" *ngIf="config.sidebar && config.sidebarPosition == 'right' " [style.background-color]="config.sideBg" (click)="focusInput()"
+            [style.width]="config.sideWidth" [ngClass]="{ 'responsive' : config.responsive}" >
+                <div class="selected-date-string" [style.font-size]="config.sideFontSize" [style.color]="config.sideColor">
+                    <div>
+                        <span>{{selectedDate.FullDate}}</span>
+                    </div>
+                    <div class="side-header">
+                        <span>{{config.sideHeader}}</span>
+                    </div>
+                    <div class="go-today" (click)="goToToday()" [style.background]="config.buttonBg" >
+                        <span [style.color]=" config.buttonColor ? config.buttonColor : config.sideBg  " >برو به امروز</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="datepicker-calendar" [style.width]="config.calendarWidth" >
+            
+            <div class="datepicker-calendar" [style.width]="config.calendarWidth" >
 
-            <div class="datepicker-top" [style.background]="config.sideBg" *ngIf="(config.sidebar && config.sidebarPosition == 'top') || config.responsive " >
-                <span [style.color]="config.sideColor" >{{selectedDate.FullDate}}</span>
-                <div class="calendar-go-today" (click)="goToToday()"  ></div>
-            </div>
+                <div class="datepicker-top" [style.background]="config.sideBg" *ngIf="(config.sidebar && config.sidebarPosition == 'top') || config.responsive " >
+                    <span [style.color]="config.sideColor" >{{selectedDate.FullDate}}</span>
+                    <div class="calendar-go-today" (click)="goToToday()"  ></div>
+                </div>
 
-            <div class="calendar-go-today" (click)="goToToday()" *ngIf="!config.sidebar" ></div>
-            <div class="datepicker-box" [ngClass]="{ 'hide' : selectedScreen != 'date' }" >
-                <div class="datepicker-control">
-                    <div>
-                        <div class="next-month-arrow" (click)="showNextMonth()" *ngIf="isNextEnabled" >
-                            <span>></span>
+                <div class="calendar-go-today" (click)="goToToday()" *ngIf="!config.sidebar" ></div>
+                <div class="datepicker-box" [ngClass]="{ 'hide' : selectedScreen != 'date' }" >
+                    <div class="datepicker-control">
+                        <div>
+                            <div class="next-month-arrow" (click)="showNextMonth()" *ngIf="isNextEnabled" >
+                                <span>></span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="month-year-control" (click)="showCalendarMonths()" >
+                                <span>{{currentShowingMonth.value}}</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="prev-month-arrow" (click)="showPrevMonth()" *ngIf="isPrevEnabled" >
+                                <span> < </span>
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="month-year-control" (click)="showCalendarMonths()" >
-                            <span>{{currentShowingMonth.value}}</span>
+                    
+                    <div class="days-container"  >
+                        <div class="datepicker-days-title">
+                            <div class="day-title" *ngFor="let title of daysTitle" >
+                                <span [ngClass]="{ 'holiday' : title == holiday }" >{{title}}</span>
+                            </div>
+                        </div>
+                        <div class="datepicker-days">
+                            <div class="day" *ngFor="let day of days" 
+                            [ngClass]="{ 'main' : day.isMain , 'selected' : day.isSelected , 'not-allowed' : day.notAllowed , 'isHoliday' : day.isHoliday }" (click)="selectDate(day)" >
+                                {{day.date}}
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="prev-month-arrow" (click)="showPrevMonth()" *ngIf="isPrevEnabled" >
-                            <span> < </span>
+
+                    <div class="datepicker-clock" *ngIf="config.mode == 'datetime' " >
+                        <input type="time" class="datepicker-clock-input" [(ngModel)]="selectedDate.time.HM"  >
+                    </div>
+
+                </div>
+            
+            
+                <div class="datepicker-box" [ngClass]="{ 'hide' : selectedScreen != 'month' }" >
+                    <div class="datepicker-control">
+                        <div>
+                            <div class="next-year-arrow month-arrow" (click)="showNextYear()" *ngIf="isNextEnabled" >
+                                <span>></span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="month-year-control"  >
+                                <span>{{currentShowingYear}}</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="prev-month-arrow month-arrow" (click)="showPrevYear()" *ngIf="isPrevEnabled" >
+                                <span> < </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="datepicker-months">
+                        <div class="datepicker-month" *ngFor="let month of Months ; let i = index ;" 
+                        [ngClass]="{ 'selected' : i+1 == selectedDate.month && selectedDate.year == currentShowingYear , 'not-allowed' : month.notAllowed }" 
+                        (click)="selectMonth(i+1 , currentShowingYear ,month.notAllowed )"  >
+                            {{month.value}}
                         </div>
                     </div>
                 </div>
+
                 
-                <div class="days-container"  >
-                    <div class="datepicker-days-title">
-                        <div class="day-title" *ngFor="let title of daysTitle" >
-                            <span [ngClass]="{ 'holiday' : title == holiday }" >{{title}}</span>
-                        </div>
-                    </div>
-                    <div class="datepicker-days">
-                        <div class="day" *ngFor="let day of days" 
-                         [ngClass]="{ 'main' : day.isMain , 'selected' : day.isSelected , 'not-allowed' : day.notAllowed , 'isHoliday' : day.isHoliday }" (click)="selectDate(day)" >
-                            {{day.date}}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="datepicker-clock" *ngIf="config.mode == 'datetime' " >
-                    <input type="time" class="datepicker-clock-input" [(ngModel)]="selectedDate.time.HM"  >
-                </div>
-
+                
+                
             </div>
-        
-        
-            <div class="datepicker-box" [ngClass]="{ 'hide' : selectedScreen != 'month' }" >
-                <div class="datepicker-control">
-                    <div>
-                        <div class="next-year-arrow month-arrow" (click)="showNextYear()" *ngIf="isNextEnabled" >
-                            <span>></span>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="month-year-control"  >
-                            <span>{{currentShowingYear}}</span>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="prev-month-arrow month-arrow" (click)="showPrevYear()" *ngIf="isPrevEnabled" >
-                            <span> < </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="datepicker-months">
-                    <div class="datepicker-month" *ngFor="let month of Months ; let i = index ;" 
-                    [ngClass]="{ 'selected' : i+1 == selectedDate.month && selectedDate.year == currentShowingYear , 'not-allowed' : month.notAllowed }" 
-                    (click)="selectMonth(i+1 , currentShowingYear ,month.notAllowed )"  >
-                        {{month.value}}
-                    </div>
-                </div>
-            </div>
-
-            
-            
             
         </div>
-        
     </div>
 
 </div>

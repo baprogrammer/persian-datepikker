@@ -63,6 +63,8 @@ in your component add
 | minDate      | string  | "1401/04/03"       |         |
 | maxDate      | string  | "1401/04/03"       |         |
 | config       | any { } |                    |         |
+| hideOnSelect | boolean |                    | false   |
+| calendarType | string  | 'modal'            | false   |
 
 ## datepikker outputs
 
@@ -72,7 +74,7 @@ access to all the calendar's info in one object
 | getUserSelectedDate| selectDate | object
 
 ```sh
-<persian-datepikker  (getUserSelectedDate)="funcion($evnet)"></persian-datepikker>
+<persian-datepikker  (getUserSelectedDate)="funcionName($evnet)"></persian-datepikker>
 ```
 
 ## customize calendar
