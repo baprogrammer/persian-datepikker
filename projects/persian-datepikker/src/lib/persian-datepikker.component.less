@@ -22,11 +22,22 @@
 }
 
 .datepicker-days-title{
-    float: right;
+    display: flex;
     width: 100%;
-    margin: 10px 0;
     border-bottom: 1px solid #cccccc52;
     padding-bottom: 5px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    flex-direction: row-reverse;
+}
+
+.datepicker-days{
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
 }
 
 .datepicker-content-container{
@@ -39,7 +50,7 @@
 
 .datepicker-calendar{
     width: 450px;
-    height: 450px;
+    height: 420px;
 }
 
 .datepicker-box{
@@ -59,19 +70,22 @@
     color: red;
 }
 
-.day-title , .day{
+.day-title{
+    font-size: 12px;
+    flex: 1;
+    padding: 0!important;
     color: #c3c3c3;
-    float: right;
     text-align: center;
-    width: 14.28%;
-    padding: 5px;
 }
+
+
 
 .day{
     color: #ccc;
     cursor: pointer;
-    height: 50px;
-    line-height: 50px;
+    flex: 0 0 calc(14.2%);
+    text-align: center;
+    padding: 10px;
 }
 
 .day.isHoliday{
@@ -102,18 +116,20 @@ span , div{
 }
 
 .datepicker-control{
-    float: right;
     width: 100%;
     margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-direction: row-reverse;
 }
 
 .datepicker-control > div{
-    min-height: 5px;
-    width: 33%;
-    padding: 5px 10px;
     text-align: center;
-    float: right;
+    min-height: 5px;
     cursor: pointer;
+    flex: 1;
 }
 
 .datepicker-control > div  span{
@@ -125,13 +141,20 @@ span , div{
     display: none;
 }
 
+.datepicker-months{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    flex-direction: row-reverse;
+}
+
 .datepicker-month{
-    float: right;
-    width: 33%;
     text-align: center;
-    line-height: 50px;
     font-size: 14px;
     cursor: pointer;
+    flex: 0 0 33.33%;
+    height: 85px;
+    min-height: 40px !important;
 }
 
 .datepicker-month.selected{
@@ -144,7 +167,7 @@ span , div{
 
 .datepicker-side{
     width: 220px;
-    height: 450px;
+    height: 420px;
     background: #e7ecec;
     position: relative;
 }
@@ -234,6 +257,11 @@ span , div{
     top: 15px;
 }
 
+.none{
+    display: none;
+}
+
+
 .modal-datepikker{
     position: fixed;
     background: rgba(0,0,0,0.5);
@@ -242,21 +270,30 @@ span , div{
     top: 0;
     right: 0;
     z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    .datepicker-calendar{
-        position: fixed;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 80%;
-        right: 10%;
-    }
+    
 
     .datepicker-content-container {
         position: relative ;
         top: auto ;
         left: auto ;
     }
+
+    .datepicker-side{
+        display: none;
+    }
+
+    .datepicker-top{
+        display: block;
+    }
+
 }
+
+
+
 
 
 .dark {
@@ -285,26 +322,17 @@ span , div{
         color: #6c6c6c ;
     }
 
-
+    .not-allowed{
+        color: #444;
+    }
     
 
 }
 
-@media screen and (max-width: 710px) {
-    .datepicker-side.responsive {
-      display: none;
-    }
-    .datepicker-top{
-        display: block;
-    }
-  }
+
   
 
-  @media screen and (max-width: 500px) {
-    .datepicker-calendar{
-        width: 100%;
-    }
-  }
+  
   
 
 

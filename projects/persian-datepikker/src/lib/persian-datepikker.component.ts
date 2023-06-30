@@ -1,7 +1,10 @@
-import { Component, EventEmitter, Input, OnInit , Output, Renderer2 } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit , Output, Renderer2 } from '@angular/core';
 
-import moment from'moment-jalaali';
+import * as moment from'moment-jalaali';
 import { PersianDatepikkerService } from './persian-datepikker.service';
+import { CalendarConfig } from './persian-datepikker.interface';
+
+
 
 @Component({
   selector: 'persian-datepikker',
@@ -51,34 +54,31 @@ export class PersianDatepikkerComponent implements OnInit {
   
   @Input() date : string = "" ; // 1401/3/7
   @Input() datetime : string =""; //==== 1402/5/12 23:45
-  @Input() config   : any  = { 
-    theme : "normal" , //======== dark - 
-    sidebar : true , // =====
-    sidebarPosition : 'top' , //======== top - right
-    responsive : true ,
-    //inputWidth : "300px" , // =====
-    //sideHeader : "انتخاب تاریخ قرعه کشی" , // =====
-    sideBg : "#59d082" , //======== side background #59d082  #00623e  #71b1ab  #03283e
-    sideColor : "#fff" , //======== side forground 
-    //sideWidth  : "180px" , //======== side width
-    //sideFontSize  : "28px" , //======== side width
-    //calendarWidth  : "300px" , //======== calendar width
-    mode : 'datetime' , //========== date or datetime
-    //buttonBg : 'red' ,
-    //buttonColor : '#fff' ,
-    //scale : "0.9"
-    
+
+  @Input() config   : CalendarConfig  = {
+    id: "date-picker" + (Math.round(Math.random() * 10000)),
+    theme: "normal",
+    sidebar: true,
+    sidebarPosition: 'top',
+    responsive: true,
+    sideBg: "#00623e",
+    sideColor: "#fff",
+    mode: 'date',
+    calendarWidth: 400,
+    sideWidth: 220,
+    hideOnSelect: true ,
+    closeButton: false
   }; 
 
   displayCalendar : boolean = false ;
 
-  @Input() hideOnSelect : boolean = false ;
+  
   @Input() calendarType : string = "" ; //====== can be modal
 
   @Output() getUserSelectedDate = new EventEmitter<any>() ;
   
 
-  constructor(private renderer: Renderer2 ,private datePikkerService : PersianDatepikkerService) {
+  constructor(private renderer: Renderer2 ,private datePikkerService : PersianDatepikkerService , private elementRef: ElementRef) {
     
     this.holidayIndex = this.datePikkerService.findByValue(this.daysTitle , this.holiday) ;
     this.today = this.initDate();
@@ -103,6 +103,9 @@ export class PersianDatepikkerComponent implements OnInit {
     this.updateCurrentSettings(this.selectedDate.year , this.selectedDate.month);
     this.getCalendar(this.currentShowingYear , this.currentShowingMonth.index , this.selectedDate );
     this.setDisplayDate();
+
+    if(this.config.responsive)
+    this.addMediaQuery()
     
   }
 
@@ -396,7 +399,7 @@ let index = 1 ;
       this.setDisplayDate();
       this.getUserSelectedDate.emit(this.selectedDate);
     }
-    if(this.hideOnSelect){
+    if(this.config.hideOnSelect){
       this.hideCalendar();
     }
     //===========================================================
@@ -542,6 +545,28 @@ let index = 1 ;
       }
     }
   }
+
+
+  addMediaQuery() {
+    let calendarSize = this.config.calendarWidth ;
+    if(this.config.sideWidth)
+    calendarSize += this.config.sideWidth+20
+
+    const style = `@media screen and (max-width: ${calendarSize}px) { #${this.config.id} { width: 100% !important;} 
+    #${this.config.id} .datepicker-side{ display : none  } 
+    #${this.config.id} .datepicker-calendar{ width : 100% !important ; right : 0 } 
+    #${this.config.id} .datepicker-top{display : block} }
+    `;
+    const styleElement = this.renderer.createElement('style');
+    this.renderer.appendChild(styleElement, this.renderer.createText(style));
+    this.renderer.appendChild(document.head, styleElement);
+  }
+
+  
+
+
+
+  
 
 
 }
