@@ -15,7 +15,7 @@ export class PersianDatepikkerComponent implements OnInit {
 
   enDate : any = { year : "" , month : "" , day : "" };
   today : any = { year : "" , month : "" , day : "" };
-  displayDate : string = "" ;
+  displayDate : string  ;
   days : any = [] ;
   
   daysTitle : any = ["ش" , "ی" , "د" , "س" , "چ" , "پ" , "ج"] ;
@@ -49,15 +49,15 @@ export class PersianDatepikkerComponent implements OnInit {
   isNextEnabled  : boolean = true ;
   isPrevEnabled : boolean = true ;
 
-  @Input() minDate : string = "" ; // 1401/3/7
-  @Input() maxDate : string = "" ; // 1401/3/7
+  @Input() minDate : string  ; // 1401/3/7
+  @Input() maxDate : string  ; // 1401/3/7
   
-  @Input() date : string = "" ; // 1401/3/7
-  @Input() datetime : string =""; //==== 1402/5/12 23:45
+  @Input() date : string  ; // 1401/3/7
+  @Input() datetime : string ; //==== 1402/5/12 23:45
 
   @Input() config   : CalendarConfig  = {
     id: "date-picker" + (Math.round(Math.random() * 10000)),
-    theme: "normal",
+    theme: "light",
     sidebar: true,
     sidebarPosition: 'top',
     responsive: true,
@@ -87,26 +87,33 @@ export class PersianDatepikkerComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkValidation() ;
-    if(!this.selectedDate){
-      if(this.datetime != ""){
-        this.initWithJustDatetime(this.datetime);
-      }
-      else{
-        if(this.date != ""){
-          this.initWithJustDate(this.date);
-        }
-        else{
-          this.selectedDate = this.today ;
-        }
-      }
-    }
+    this.constructDate();
     this.updateCurrentSettings(this.selectedDate.year , this.selectedDate.month);
     this.getCalendar(this.currentShowingYear , this.currentShowingMonth.index , this.selectedDate );
-    this.setDisplayDate();
+    
 
     if(this.config.responsive)
     this.addMediaQuery()
     
+  }
+
+  constructDate(){
+   if(this.selectedDate) {
+    this.selectedDate = this.today ;
+    return 
+   }
+
+   if(this.datetime){
+    this.initWithJustDatetime(this.datetime);
+    return 
+   }
+
+   if(this.date){
+    this.initWithJustDate(this.date);
+    return
+   }
+
+    this.selectedDate = this.today ;
   }
 
   initWithJustDate(date : string){
@@ -131,9 +138,9 @@ export class PersianDatepikkerComponent implements OnInit {
     if(!min && !max){
       this.selectedDate = this.today ;
     }
-    // this.getCalendar(this.today.year , this.today.month , this.selectedDate);
     
     this.selectMonth(this.today.month , this.today.year);
+    this.selectDate({value : z })
   }
 
   focusInput(){
@@ -406,6 +413,11 @@ let index = 1 ;
   }
 
   setDisplayDate(){
+    if(!this.selectedDate){
+      this.displayDate = null ;
+      return 
+    }
+    
     if(this.config.mode == 'date'){
       this.displayDate = this.selectedDate.date ;
     }
@@ -564,7 +576,10 @@ let index = 1 ;
 
   
 
-
+  clearDatePicker(){
+    this.selectedDate = null ;
+    this.setDisplayDate();
+  }
 
   
 

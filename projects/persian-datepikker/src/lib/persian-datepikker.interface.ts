@@ -1,4 +1,4 @@
-type theme = "normal" | "dark" ;
+type theme = "light" | "dark" ;
 type barPosition = "top" | "right" ;
 type mode = "date" | "datetime";
 type calendarType = "modal" | 'normal';
