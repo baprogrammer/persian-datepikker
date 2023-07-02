@@ -632,12 +632,15 @@ let index = 1 ;
 
   addMediaQuery() {
     let calendarSize = this.config.calendarWidth ;
-    if(this.config.sideWidth)
-    calendarSize += this.config.sideWidth+20
+    if(this.config.sideWidth && this.config.sidebarPosition == 'right')
+    calendarSize += this.config.sideWidth ;
+
+    calendarSize += 20 ;
 
     const style = `@media screen and (max-width: ${calendarSize}px) { #${this.config.id} { width: 100% !important;} 
     #${this.config.id} .datepicker-side{ display : none  } 
     #${this.config.id} .datepicker-calendar{ width : 100% !important ; right : 0 } 
+    #${this.config.id} .datepicker-content-container{ width : 100% !important ; } 
     #${this.config.id} .datepicker-top{display : block} }
     `;
     const styleElement = this.renderer.createElement('style');
