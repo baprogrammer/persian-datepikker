@@ -1,17 +1,25 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit , Output, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnInit , Output, Renderer2, forwardRef } from '@angular/core';
 
 import * as moment from'moment-jalaali';
 import { PersianDatepikkerService } from './persian-datepikker.service';
 import { CalendarConfig } from './persian-datepikker.interface';
+import { ControlValueAccessor , NG_VALUE_ACCESSOR} from '@angular/forms';
 
 
 
 @Component({
   selector: 'persian-datepikker',
   templateUrl: './persian-datepikker.component.html',
-  styleUrls: ['./persian-datepikker.component.less']
+  styleUrls: ['./persian-datepikker.component.less'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => PersianDatepikkerComponent),
+      multi: true,
+    },
+  ],
 })
-export class PersianDatepikkerComponent implements OnInit {
+export class PersianDatepikkerComponent implements OnInit , ControlValueAccessor , AfterViewInit  {
 
   enDate : any = { year : "" , month : "" , day : "" };
   today : any = { year : "" , month : "" , day : "" };
@@ -49,6 +57,7 @@ export class PersianDatepikkerComponent implements OnInit {
   isNextEnabled  : boolean = true ;
   isPrevEnabled : boolean = true ;
 
+
   @Input() minDate : string  ; // 1401/3/7
   @Input() maxDate : string  ; // 1401/3/7
   
@@ -67,13 +76,13 @@ export class PersianDatepikkerComponent implements OnInit {
     calendarWidth: 400,
     sideWidth: 220,
     hideOnSelect: true ,
-    closeButton: false
+    hideOnOut: false
   }; 
 
   displayCalendar : boolean = false ;
 
   
-  @Input() calendarType : string = "" ; //====== can be modal
+  
 
   @Output() getUserSelectedDate = new EventEmitter<any>() ;
   
@@ -82,19 +91,66 @@ export class PersianDatepikkerComponent implements OnInit {
     
     this.holidayIndex = this.datePikkerService.findByValue(this.daysTitle , this.holiday) ;
     this.today = this.initDate();
+
+    
+    
     
    }
+  
+
+
+  val: any = '';
+  onChange: any = () => {};
+  onTouch: any = () => {};
+
+  set value(val: any) {
+    if (val !== undefined && this.val !== val) {
+      this.val = val;
+      this.onChange(val);
+      this.onTouch(val);
+    }
+  }
+
+
+  writeValue(value: any): void {
+    this.value = value;
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouch = fn;
+  }
 
   ngOnInit(): void {
     this.checkValidation() ;
     this.constructDate();
-    this.updateCurrentSettings(this.selectedDate.year , this.selectedDate.month);
-    this.getCalendar(this.currentShowingYear , this.currentShowingMonth.index , this.selectedDate );
-    
 
     if(this.config.responsive)
     this.addMediaQuery()
     
+  }
+
+  
+  
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      if(this.val){
+        if(typeof this.val == 'string'){
+          this.datetime = this.val ;
+          this.initWithJustDatetime(this.datetime)
+        }
+        else{
+          this.selectedDate = this.val ;
+          this.initWithJustDatetime(this.selectedDate.dateTime)
+        }
+        this.setDisplayDate()
+      }
+      this.updateCurrentSettings(this.selectedDate.year , this.selectedDate.month);
+      this.getCalendar(this.currentShowingYear , this.currentShowingMonth.index , this.selectedDate );
+    }, 100);
   }
 
   constructDate(){
@@ -141,6 +197,7 @@ export class PersianDatepikkerComponent implements OnInit {
     
     this.selectMonth(this.today.month , this.today.year);
     this.selectDate({value : z })
+    this.showCalendar()
   }
 
   focusInput(){
@@ -249,7 +306,7 @@ export class PersianDatepikkerComponent implements OnInit {
     today.daysOfWeek = enToday.getDay();
     today.dayString = this.getDateString(today.daysOfWeek);
     today.monthString = this.getMonthString(today.month);
-    today.FullDate =  today.dayString+" "+today.day+" "+today.monthString+" "+today.year ;
+    today.fullDate =  today.dayString+" "+today.day+" "+today.monthString+" "+today.year ;
     today.date =  moment(enFullDate).format('jYYYY/jM/jD');
     
     today.time =  {
@@ -393,6 +450,9 @@ let index = 1 ;
   }
 
   selectDate(day : any){
+    if(day.notAllowed)
+    return 
+    
     let y = moment(day.value , 'jYYYY/jM/jD').format('YYYY/M/D');
     //============= check for min Date =========================
     let z =  moment(day.value , 'jYYYY/jM/jD').format('jYYYY/jM/jD'); 
@@ -410,6 +470,17 @@ let index = 1 ;
       this.hideCalendar();
     }
     //===========================================================
+    if(this.config.dataType){
+      if(this.config.dataType == 'date'){
+        this.writeValue(this.selectedDate.date)
+      }
+      else{
+        this.writeValue(this.selectedDate.dateTime)
+      }
+    }
+    else{
+      this.writeValue(this.selectedDate)
+    }
   }
 
   setDisplayDate(){
@@ -553,7 +624,7 @@ let index = 1 ;
     if(this.date != ''){
       if(!this.isValidDate(this.date)){
         this.date = "" ;
-        console.error("date is not valid ; valid format : 1401/5/24 ");
+        console.warn("date is not valid ; valid format : 1401/5/24 ");
       }
     }
   }

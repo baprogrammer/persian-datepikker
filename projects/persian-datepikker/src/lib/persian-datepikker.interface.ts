@@ -1,7 +1,9 @@
 type theme = "light" | "dark" ;
 type barPosition = "top" | "right" ;
 type mode = "date" | "datetime";
+type dataType = "date" | "datetime" | "object" 
 type calendarType = "modal" | 'normal';
+
 
 export interface CalendarConfig {
   id              : string
@@ -21,6 +23,7 @@ export interface CalendarConfig {
   buttonColor     ?: string 
   scale           ?: number
   hideOnSelect     : boolean
-  closeButton      : boolean
+  hideOnOut        : boolean
   type             ?: calendarType
+  dataType         ?: dataType
 }
